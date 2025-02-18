@@ -19,6 +19,11 @@ from models.reserva import Reserva
 from strategy.search_strategy import SearchByTitle, SearchByAuthor, SearchByCategory
 from database.database import Database
 
+# Criação de instâncias fora do loop principal
+livro = Livro(nome="", categoria="", autor="")
+usuario = Usuario(nome="", email="", telefone="")
+reserva = Reserva(usuario_nome="", livro_nome="")
+
 while True:
     action = questionary.select(
         "O que você deseja fazer?",
@@ -26,26 +31,20 @@ while True:
     ).ask()
 
     if action == "Cadastrar livro":
-        livro = Livro(
-            nome=input("Digite o nome do livro: "),
-            categoria=questionary.select("Qual a categoria do livro?", choices=['Esporte', 'Ficção', 'Educação', 'Fantasia', 'Diversa']).ask(),
-            autor=input("Qual o nome do autor do livro? ")
-        )
+        livro.nome = input("Digite o nome do livro: ")
+        livro.categoria = questionary.select("Qual a categoria do livro?", choices=['Esporte', 'Ficção', 'Educação', 'Fantasia', 'Diversa']).ask()
+        livro.autor = input("Qual o nome do autor do livro? ")
         livro.salvar()
 
     elif action == "Cadastrar usuário":
-        usuario = Usuario(
-            nome=input("Digite seu nome: "),
-            email=input("Digite seu email: "),
-            telefone=input("Digite o número do seu telefone: ")
-        )
+        usuario.nome = input("Digite seu nome: ")
+        usuario.email = input("Digite seu email: ")
+        usuario.telefone = input("Digite o número do seu telefone: ")
         usuario.salvar()
 
     elif action == "Fazer uma reserva":
-        reserva = Reserva(
-            usuario_nome=input("Digite o nome do usuário: "),
-            livro_nome=input("Digite o título do livro: ")
-        )
+        reserva.usuario_nome = input("Digite o nome do usuário: ")
+        reserva.livro_nome = input("Digite o título do livro: ")
         reserva.realizar()
 
     elif action == "Buscar um livro":
